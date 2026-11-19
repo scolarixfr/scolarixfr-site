@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scolarix — Fiche de Cours & Exercices</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .course-header {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        .section-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        .section-box h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .highlight-rule {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin: 1.2rem 0;
+        }
+        .exo-card {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .exo-card:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .btn-toggle {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+        }
+        .corrige-box {
+            display: none;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+        .pdf-download-box {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 1px solid #fde68a;
+            padding: 2rem;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">🎓 Scolarix</a>
+        <div class="nav-links">
+            <a href="index.html">← Tous les cours</a>
+            <a href="visio.html" class="btn-primary">Aide en visio</a>
+        </div>
+    </header>
+
+    <main class="container" style="max-width: 900px;">
+        
+        <!-- En-tête du chapitre -->
+        <div class="course-header">
+            <span class="tag tag-college">Collège • 4e / 3e • Mathématiques</span>
+            <h1 style="font-size: 2rem; margin: 0.5rem 0;">Les équations du premier degré</h1>
+            <p style="color: var(--text-muted);">Maîtrise la méthode pas à pas pour résoudre n'importe quelle équation et prépare ton évaluation avec notre contrôle PDF.</p>
+        </div>
+
+        <!-- 1. L'essentiel du cours -->
+        <section class="section-box">
+            <h2>📘 1. L'essentiel du cours</h2>
+            <p>Une <strong>équation</strong> est une égalité dans laquelle figure un nombre inconnu, généralement noté <strong>x</strong>. Résoudre l'équation consiste à trouver la valeur de <strong>x</strong> pour que l'égalité soit vraie.</p>
+            
+            <div class="highlight-rule">
+                <strong>La règle d'or :</strong><br>
+                Quand un terme change de côté par rapport au signe <strong>=</strong>, il change d'opération :<br>
+                • Une addition (<strong>+</strong>) devient une soustraction (<strong>−</strong>)<br>
+                • Une multiplication (<strong>×</strong>) devient une division (<strong>÷</strong>)
+            </div>
+
+            <p><strong>Exemple détaillé :</strong> Résoudre <code>3x + 4 = 19</code></p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: var(--text-muted);">
+                <li>On isole <code>3x</code> en passant <code>+4</code> à droite : <code>3x = 19 − 4</code></li>
+                <li>On calcule : <code>3x = 15</code></li>
+                <li>On divise par 3 : <code>x = 15 ÷ 3</code> → <strong>x = 5</strong></li>
+            </ul>
+        </section>
+
+        <!-- 2. Les exercices d'entraînement -->
+        <section class="section-box">
+            <h2>✏️ 2. Exercices d'entraînement</h2>
+
+            <div class="exo-card">
+                <p><strong>Exercice 1 (Application directe) :</strong> Résous l'équation <code>x − 7 = 12</code></p>
+                <button class="btn-toggle" onclick="toggleCorrige('c1')">Afficher / Masquer la correction</button>
+                <div id="c1" class="corrige-box">
+                    <strong>Correction :</strong><br>
+                    On passe le <code>−7</code> à droite (il devient <code>+7</code>) :<br>
+                    <code>x = 12 + 7</code> → <strong>x = 19</strong>
+                </div>
+            </div>
+
+            <div class="exo-card">
+                <p><strong>Exercice 2 (Niveau intermédiaire) :</strong> Résous l'équation <code>5x − 8 = 17</code></p>
+                <button class="btn-toggle" onclick="toggleCorrige('c2')">Afficher / Masquer la correction</button>
+                <div id="c2" class="corrige-box">
+                    <strong>Correction :</strong><br>
+                    1. On passe le <code>−8</code> à droite : <code>5x = 17 + 8</code> donc <code>5x = 25</code>.<br>
+                    2. On divise par 5 : <code>x = 25 ÷ 5</code> → <strong>x = 5</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Téléchargement du contrôle PDF -->
+        <section class="pdf-download-box">
+            <div>
+                <h3 style="color: #92400e; margin-bottom: 0.3rem;">⏱️ Prêt pour l'évaluation ?</h3>
+                <p style="color: #78350f; font-size: 0.95rem;">Télécharge et imprime le contrôle blanc (20 min) ainsi que son corrigé officiel en PDF.</p>
+            </div>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <!-- Remplace # par pdf/nom-du-fichier.pdf quand tu ajouteras tes PDF -->
+                <a href="#" target="_blank" class="btn-primary" style="background: #d97706;">📄 Sujet PDF</a>
+                <a href="#" target="_blank" class="btn-card-pdf" style="background: white;">✅ Corrigé PDF</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Scolarix — Tous droits réservés | Contact : contact.scolarix@gmail.com</p>
+    </footer>
+
+    <script>
+        function toggleCorrige(id) {
+            const bloc = document.getElementById(id);
+            bloc.style.display = (bloc.style.display === "block") ? "none" : "block";
+        }
+    </script>
+</body>
+</html>
