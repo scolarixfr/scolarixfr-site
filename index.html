@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scolarix — Cours, Exercices & Contrôles PDF (CP à Terminale)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">🎓 Scolarix</a>
+        <div class="nav-links">
+            <a href="#catalogue">Les Cours</a>
+            <a href="visio.html" class="btn-primary">Aide en visio</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <span class="pill-badge">Du CP à la Terminale • Général, Techno & Pro</span>
+        <h1>Comprends tes cours et réussis tous tes contrôles</h1>
+        <p>Accède gratuitement aux fiches de révision, aux exercices corrigés et aux contrôles blancs en PDF pour t'entraîner à ton rythme.</p>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" onkeyup="filtrerCours()" placeholder="🔍 Rechercher un chapitre, une classe (ex: CM2, 3e, Bac Pro, maths...)">
+        </div>
+    </section>
+
+    <main id="catalogue" class="container">
+        <div class="filters">
+            <button class="filter-btn active" onclick="changerCategorie('tous', this)">Tous les niveaux</button>
+            <button class="filter-btn" onclick="changerCategorie('ecole', this)">École (CP - CM2)</button>
+            <button class="filter-btn" onclick="changerCategorie('college', this)">Collège (6e - 3e)</button>
+            <button class="filter-btn" onclick="changerCategorie('lycee-gt', this)">Lycée Général & Techno</button>
+            <button class="filter-btn" onclick="changerCategorie('lycee-pro', this)">Lycée Professionnel</button>
+        </div>
+
+        <div class="courses-grid" id="coursesContainer"></div>
+    </main>
+
+    <section class="container">
+        <div class="visio-banner">
+            <h2>Besoin d'un coup de main en direct ?</h2>
+            <p>Tu bloques sur un devoir maison ou tu veux réviser un contrôle important ? Réserve un créneau d'aide aux devoirs en visio.</p>
+            <a href="visio.html" class="btn-primary" style="padding: 0.9rem 1.8rem; font-size: 1rem;">Réserver une aide à distance →</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Scolarix — Tous droits réservés | Contact : contact.scolarix@gmail.com</p>
+        <p style="margin-top:0.5rem;">
+            <a href="#">YouTube</a> • <a href="#">TikTok</a> • <a href="#">Instagram</a> • <a href="#">Facebook</a>
+        </p>
+    </footer>
+
+    <script src="cours.js"></script>
+</body>
+</html>
