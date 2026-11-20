@@ -14,7 +14,7 @@ const listeCours = [
         titre: "Les équations du premier degré",
         description: "La méthode pas à pas pour isoler l'inconnue x, avec 3 exercices progressifs et un sujet type Brevet.",
         lienCours: "cours-modele.html",
-        lienPdf: "#"
+        lienPdf: "href="Contrôle Blanc _ Les Équations (3ème).pdf"
     },
     {
         categorie: "lycee-gt",
