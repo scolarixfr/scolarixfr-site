@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scolarix — Fiche de Cours & Exercices</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .course-header, .section-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        .section-box h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+        }
+        .contenu-texte {
+            white-space: pre-line; /* Garde automatiquement vos retours à la ligne */
+            color: var(--text);
+            font-size: 1.05rem;
+        }
+        .btn-toggle {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.65rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            font-size: 0.95rem;
+        }
+        .corrige-box {
+            display: none;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            white-space: pre-line;
+        }
+        .pdf-download-box {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 1px solid #fde68a;
+            padding: 2rem;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">🎓 Scolarix</a>
+        <div class="nav-links">
+            <a href="index.html">← Tous les cours</a>
+            <a href="visio.html" class="btn-primary">Aide en visio</a>
+        </div>
+    </header>
+
+    <main class="container" style="max-width: 900px;" id="zoneCours">
+        <p style="text-align:center; padding: 3rem; color: var(--text-muted);">Chargement du cours en cours...</p>
+    </main>
+
+    <footer>
+        <p>© 2026 Scolarix — Tous droits réservés | Contact : contact.scolarix@gmail.com</p>
+    </footer>
+
+    <script src="cours.js"></script>
+    <script>
+        function toggleCorrige(id) {
+            const bloc = document.getElementById(id);
+            bloc.style.display = (bloc.style.display === "block") ? "none" : "block";
+        }
+
+        // Récupère l'ID du cours dans l'URL (ex: cours.html?id=0)
+        const params = new URLSearchParams(window.location.search);
+        const indexCours = params.get("id");
+        const zone = document.getElementById("zoneCours");
+
+        function afficherDetailCours(cours) {
+            if (!cours) {
+                zone.innerHTML = `<div class="section-box" style="text-align:center;"><h2>Cours introuvable</h2><p>Ce chapitre n'existe pas encore.</p><br><a href="index.html" class="btn-primary">Retour à l'accueil</a></div>`;
+                return;
+            }
+
+            document.title = "Scolarix — " + cours.titre;
+
+            zone.innerHTML = `
+                <div class="course-header">
+                    <span class="tag tag-${cours.categorie}">${cours.badge}</span>
+                    <h1 style="font-size: 2rem; margin: 0.5rem 0;">${cours.titre}</h1>
+                    <p style="color: var(--text-muted);">${cours.description}</p>
+                </div>
+
+                <section class="section-box">
+                    <h2>📘 1. L'essentiel du cours</h2>
+                    <div class="contenu-texte">${cours.lecon || "Contenu du cours à venir."}</div>
+                </section>
+
+                <section class="section-box">
+                    <h2>✏️ 2. Exercices d'entraînement</h2>
+                    <div class="contenu-texte">${cours.exercices || "Exercices à venir."}</div>
+                    <button class="btn-toggle" onclick="toggleCorrige('corrige-bloc')">Afficher / Masquer la correction</button>
+                    <div id="corrige-bloc" class="corrige-box">${cours.corrige || "Corrigé à venir."}</div>
+                </section>
+
+                <section class="pdf-download-box">
+                    <div>
+                        <h3 style="color: #92400e; margin-bottom: 0.3rem;">⏱️ Prêt pour l'évaluation ?</h3>
+                        <p style="color: #78350f; font-size: 0.95rem;">Télécharge et imprime le contrôle blanc ainsi que son corrigé en PDF.</p>
+                    </div>
+                    <div>
+                        <a href="${cours.lienPdf}" target="_blank" class="btn-primary" style="background: #d97706;">📄 Télécharger le Contrôle PDF</a>
+                    </div>
+                </section>
+            `;
+        }
+
+        // Charge le cours depuis la liste locale en attendant la connexion Google Sheets (étape 2)
+        if (typeof listeCours !== "undefined" && indexCours !== null) {
+            afficherDetailCours(listeCours[indexCours]);
+        }
+    </script>
+</body>
+</html>
