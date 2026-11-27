@@ -6,78 +6,36 @@
     <title>Scolarix — Aide aux devoirs à distance en visio</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-            margin: 2.5rem 0;
-        }
-        .step-card {
-            background: white;
-            padding: 1.8rem;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-        }
-        .step-number {
-            background: #eff6ff;
-            color: var(--primary);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        .price-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            border: 2px solid var(--border);
-            text-align: center;
-        }
-        .price-card.featured {
-            border-color: var(--primary);
-            box-shadow: 0 12px 24px -8px rgba(37, 99, 235, 0.15);
-        }
-        .price {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin: 1rem 0;
-        }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin: 2.5rem 0; }
+        .step-card { background: white; padding: 1.8rem; border-radius: 16px; border: 1px solid var(--border); }
+        .step-number { background: #eff6ff; color: var(--primary); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 1rem; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .price-card { background: white; padding: 2rem; border-radius: 16px; border: 2px solid var(--border); text-align: center; }
+        .price-card.featured { border-color: var(--primary); box-shadow: 0 12px 24px -8px rgba(37, 99, 235, 0.15); }
+        .price { font-size: 2.2rem; font-weight: 800; color: var(--primary); margin: 1rem 0; }
+        .calendly-wrapper { background: white; padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border); margin-top: 3.5rem; }
     </style>
 </head>
 <body>
 
     <header class="navbar">
         <a href="index.html" class="logo">🎓 Scolarix</a>
-        <div class="nav-links">
-            <a href="index.html">← Retour aux cours</a>
-        </div>
+        <a href="index.html" class="btn-primary">← Retour aux cours</a>
     </header>
 
     <section class="hero">
-        <span class="pill-badge">Du CP à la Terminale • Accompagnement en direct</span>
+        <span class="hero-badge">Du CP à la Terminale • Accompagnement en direct</span>
         <h1>Aide aux devoirs et préparation aux contrôles en visio</h1>
-        <p>Un blocage sur un exercice ? Un contrôle important la semaine prochaine ? Réserve un créneau en visioconférence pour avancer sereinement.</p>
+        <p>Un blocage sur un exercice ? Un contrôle important la semaine prochaine ? Réserve directement un créneau en visioconférence ci-dessous.</p>
     </section>
 
     <main class="container" style="max-width: 1000px;">
-        
         <h2 style="text-align:center; font-size:1.8rem;">Comment ça fonctionne ?</h2>
         <div class="steps-grid">
             <div class="step-card">
                 <div class="step-number">1</div>
                 <h3>Choisis ton créneau</h3>
-                <p style="color:var(--text-muted); margin-top:0.5rem;">Sélectionne le jour et l'heure qui t'arrangent directement sur notre calendrier en ligne.</p>
+                <p style="color:var(--text-muted); margin-top:0.5rem;">Sélectionne le jour et l'heure qui t'arrangent directement sur notre calendrier en ligne ci-dessous.</p>
             </div>
             <div class="step-card">
                 <div class="step-number">2</div>
@@ -94,27 +52,34 @@
         <h2 style="text-align:center; font-size:1.8rem; margin-top:3rem;">Nos formules d'accompagnement</h2>
         <div class="pricing-grid">
             <div class="price-card">
-                <span class="tag tag-college">Idéal pour débloquer un devoir</span>
-                <h3>Séance À la carte (1h)</h3>
-                <div class="price">20 € <span style="font-size:1rem; color:var(--text-muted); font-weight:500;">/ heure</span></div>
-                <p style="color:var(--text-muted); margin-bottom:1.5rem;">Aide aux devoirs ciblée ou explication d'un chapitre précis en visioconférence.</p>
-                <!-- Remplace # par ton lien Calendly gratuit quand il sera créé -->
-                <a href="mailto:contact.scolarix@://gmail.com" class="btn-primary" style="width:100%;">Réserver ce créneau</a>
+                <span class="tag tag-college">Idéal pour débloquer un exercice</span>
+                <h3>Séance Express (30 min)</h3>
+                <div class="price">12 € <span style="font-size:1rem; color:var(--text-muted); font-weight:500;">/ 30 min</span></div>
+                <p style="color:var(--text-muted); margin-bottom:1.5rem;">Aide aux devoirs ciblée ou explication rapide d'une notion en visioconférence.</p>
+                <a href="https://calendly.com/contact-scolarix/30min" target="_blank" class="btn-primary" style="width:100%;">Réserver ce créneau</a>
             </div>
 
             <div class="price-card featured">
                 <span class="tag tag-lycee-gt">Le plus choisi avant une évaluation</span>
-                <h3>Pack Réussite Contrôle (2 × 1h)</h3>
-                <div class="price">35 € <span style="font-size:1rem; color:var(--text-muted); font-weight:500;">/ 2 heures</span></div>
-                <p style="color:var(--text-muted); margin-bottom:1.5rem;">1h pour revoir le cours et les méthodes + 1h d'entraînement sur un contrôle blanc.</p>
-                <a href="mailto:contact.scolarix@://gmail.com" class="btn-primary" style="width:100%;">Réserver ce pack</a>
+                <h3>Pack Réussite Contrôle (1h)</h3>
+                <div class="price">20 € <span style="font-size:1rem; color:var(--text-muted); font-weight:500;">/ 2 × 30 min</span></div>
+                <p style="color:var(--text-muted); margin-bottom:1.5rem;">Séance complète pour revoir le cours, maîtriser la méthode et s'entraîner sur un contrôle.</p>
+                <a href="https://calendly.com/contact-scolarix/30min" target="_blank" class="btn-primary" style="width:100%;">Réserver ce pack</a>
             </div>
         </div>
 
+        <!-- CALENDRIER CALENDLY INTÉGRÉ DIRECTEMENT SUR LA PAGE -->
+        <div id="calendrier" class="calendly-wrapper">
+            <h2 style="text-align:center; font-size:1.6rem; margin-bottom:1rem;">📅 Choisis ton créneau en direct</h2>
+            <div class="calendly-inline-widget" data-url="https://calendly.com/contact-scolarix/30min" style="min-width:320px;height:680px;"></div>
+            <script type="text/javascript" src="https://calendly.com" async></script>
+        </div>
     </main>
 
     <footer>
-        <p>© 2026 Scolarix — Tous droits réservés | Contact : contact.scolarix@gmail.com</p>
+        <div class="footer-bottom" style="border:none; padding-top:0; justify-content:center;">
+            <span>© 2026 Scolarix — Tous droits réservés | Contact : contact.scolarix@gmail.com</span>
+        </div>
     </footer>
 
 </body>
