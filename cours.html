@@ -6,135 +6,91 @@
     <title>Scolarix — Fiche de Cours & Exercices</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .course-header, .section-box {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            margin-bottom: 2rem;
-        }
-        .section-box h2 {
-            font-size: 1.4rem;
-            margin-bottom: 1.2rem;
-        }
-        .contenu-texte {
-            white-space: pre-line;
-            color: var(--text);
-            font-size: 1.05rem;
-        }
-        .btn-toggle {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 0.65rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1.2rem;
-            font-size: 0.95rem;
-        }
-        .corrige-box {
-            display: none;
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            padding: 1.2rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            white-space: pre-line;
-        }
-        .pdf-download-box {
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-            border: 1px solid #fde68a;
-            padding: 2rem;
-            border-radius: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
+        .box { background: white; padding: 2rem; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 1.5rem; }
+        .texte { white-space: pre-line; font-size: 1.05rem; margin-top: 1rem; color: var(--text); }
+        .corrige { display: none; background: #f8fafc; border: 1px solid #cbd5e1; padding: 1.2rem; border-radius: 10px; margin-top: 1rem; white-space: pre-line; }
     </style>
 </head>
 <body>
 
     <header class="navbar">
         <a href="index.html" class="logo">🎓 Scolarix</a>
-        <div class="nav-links">
-            <a href="index.html">← Tous les cours</a>
+        <div style="display:flex; gap:0.8rem;">
+            <a href="index.html" class="btn-sm" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1;">← Tous les cours</a>
             <a href="visio.html" class="btn-primary">Aide en visio</a>
         </div>
     </header>
 
     <main class="container" style="max-width: 900px;" id="zoneCours">
-        <p style="text-align:center; padding: 3rem; color: var(--text-muted);">Chargement du cours en cours...</p>
+        <p style="text-align:center; padding:3rem; color:var(--text-muted);">Chargement du chapitre...</p>
     </main>
 
     <footer>
-        <p>© 2026 Scolarix — Tous droits réservés | Contact : contact.scolarix@gmail.com</p>
+        <div class="footer-bottom" style="border:none; padding-top:0; justify-content:center;">
+            <span>© 2026 Scolarix — Tous droits réservés | Contact : contact.scolarix@gmail.com</span>
+        </div>
     </footer>
 
-    <script src="cours.js"></script>
-    <script>
-        function toggleCorrige(id) {
-            const bloc = document.getElementById(id);
-            bloc.style.display = (bloc.style.display === "block") ? "none" : "block";
-        }
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getFirestore, doc, getDoc } from "https://gstatic.com";
 
-        function afficherDetailCours(cours) {
+        const firebaseConfig = {
+            apiKey: "AIzaSyC93Gl0vpSI_2spWQzG1JehIuNngmLCvIc",
+            authDomain: "://firebaseapp.com",
+            projectId: "scolarix-f3eaa",
+            storageBucket: "scolarix-f3eaa.firebasestorage.app",
+            messagingSenderId: "272463666273",
+            appId: "1:272463666273:web:18c8f988d994e483361e20"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function afficherLeCours() {
+            const id = new URLSearchParams(window.location.search).get("id");
             const zone = document.getElementById("zoneCours");
-
-            if (!cours) {
-                zone.innerHTML = `<div class="section-box" style="text-align:center;"><h2>Cours introuvable</h2><p>Ce chapitre n'existe pas encore.</p><br><a href="index.html" class="btn-primary">Retour à l'accueil</a></div>`;
+            if (!id) {
+                zone.innerHTML = `<div class="box"><h2>Aucun cours sélectionné</h2><br><a href="index.html" class="btn-primary">Retour à l'accueil</a></div>`;
                 return;
             }
 
-            document.title = "Scolarix — " + cours.titre;
+            const snap = await getDoc(doc(db, "cours", id));
+            if (!snap.exists()) {
+                zone.innerHTML = `<div class="box"><h2>Cours introuvable</h2><br><a href="index.html" class="btn-primary">Retour à l'accueil</a></div>`;
+                return;
+            }
 
-            const blocPdf = (cours.lienpdf && cours.lienpdf.startsWith("http")) ? `
-                <section class="pdf-download-box">
-                    <div>
-                        <h3 style="color: #92400e; margin-bottom: 0.3rem;">⏱️ Prêt pour l'évaluation ?</h3>
-                        <p style="color: #78350f; font-size: 0.95rem;">Télécharge et imprime le contrôle blanc ainsi que son corrigé en PDF.</p>
-                    </div>
-                    <div>
-                        <a href="${cours.lienpdf}" target="_blank" class="btn-primary" style="background: #d97706;">📄 Télécharger le Contrôle PDF</a>
-                    </div>
-                </section>
+            const c = snap.data();
+            document.title = "Scolarix — " + c.titre;
+
+            const blocPdf = (c.lienpdf && c.lienpdf.startsWith("http")) ? `
+                <div class="box" style="background:#fffbeb; border-color:#fde68a; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+                    <div><strong>⏱️ Contrôle blanc en PDF</strong><p style="font-size:0.9rem; color:#78350f;">Télécharge et imprime l'évaluation pour t'entraîner.</p></div>
+                    <a href="${c.lienpdf}" target="_blank" class="btn-primary" style="background:#d97706;">📄 Télécharger le PDF</a>
+                </div>
             ` : "";
 
             zone.innerHTML = `
-                <div class="course-header">
-                    <span class="tag tag-${cours.categorie}">${cours.badge}</span>
-                    <h1 style="font-size: 2rem; margin: 0.5rem 0;">${cours.titre}</h1>
-                    <p style="color: var(--text-muted);">${cours.description}</p>
+                <div class="box">
+                    <span class="tag tag-${c.categorie}">${c.badge}</span>
+                    <h1 style="font-size:2rem; margin:0.5rem 0;">${c.titre}</h1>
+                    <p style="color:#64748b;">${c.description}</p>
                 </div>
-
-                <section class="section-box">
+                <div class="box">
                     <h2>📘 1. L'essentiel du cours</h2>
-                    <div class="contenu-texte">${cours.lecon || "Contenu du cours à venir."}</div>
-                </section>
-
-                <section class="section-box">
+                    <div class="texte">${c.lecon}</div>
+                </div>
+                <div class="box">
                     <h2>✏️ 2. Exercices d'entraînement</h2>
-                    <div class="contenu-texte">${cours.exercices || "Exercices à venir."}</div>
-                    <button class="btn-toggle" onclick="toggleCorrige('corrige-bloc')">Afficher / Masquer la correction</button>
-                    <div id="corrige-bloc" class="corrige-box">${cours.corriges || "Corrigé à venir."}</div>
-                </section>
-
+                    <div class="texte">${c.exercices}</div>
+                    <button class="btn-primary" style="background:#10b981; margin-top:1.2rem;" onclick="document.getElementById('cor').style.display = (document.getElementById('cor').style.display === 'block') ? 'none' : 'block'">Afficher / Masquer la correction</button>
+                    <div id="cor" class="corrige">${c.corriges}</div>
+                </div>
                 ${blocPdf}
             `;
         }
-
-        function chargerPageUnique() {
-            const params = new URLSearchParams(window.location.search);
-            const indexCours = params.get("id");
-            if (indexCours !== null && listeCours[indexCours]) {
-                afficherDetailCours(listeCours[indexCours]);
-            } else {
-                afficherDetailCours(null);
-            }
-        }
+        afficherLeCours();
     </script>
 </body>
 </html>
