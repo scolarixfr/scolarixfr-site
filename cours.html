@@ -18,7 +18,7 @@
             margin-bottom: 1.2rem;
         }
         .contenu-texte {
-            white-space: pre-line; /* Garde automatiquement vos retours à la ligne */
+            white-space: pre-line;
             color: var(--text);
             font-size: 1.05rem;
         }
@@ -81,18 +81,27 @@
             bloc.style.display = (bloc.style.display === "block") ? "none" : "block";
         }
 
-        // Récupère l'ID du cours dans l'URL (ex: cours.html?id=0)
-        const params = new URLSearchParams(window.location.search);
-        const indexCours = params.get("id");
-        const zone = document.getElementById("zoneCours");
-
         function afficherDetailCours(cours) {
+            const zone = document.getElementById("zoneCours");
+
             if (!cours) {
                 zone.innerHTML = `<div class="section-box" style="text-align:center;"><h2>Cours introuvable</h2><p>Ce chapitre n'existe pas encore.</p><br><a href="index.html" class="btn-primary">Retour à l'accueil</a></div>`;
                 return;
             }
 
             document.title = "Scolarix — " + cours.titre;
+
+            const blocPdf = (cours.lienpdf && cours.lienpdf.startsWith("http")) ? `
+                <section class="pdf-download-box">
+                    <div>
+                        <h3 style="color: #92400e; margin-bottom: 0.3rem;">⏱️ Prêt pour l'évaluation ?</h3>
+                        <p style="color: #78350f; font-size: 0.95rem;">Télécharge et imprime le contrôle blanc ainsi que son corrigé en PDF.</p>
+                    </div>
+                    <div>
+                        <a href="${cours.lienpdf}" target="_blank" class="btn-primary" style="background: #d97706;">📄 Télécharger le Contrôle PDF</a>
+                    </div>
+                </section>
+            ` : "";
 
             zone.innerHTML = `
                 <div class="course-header">
@@ -110,24 +119,21 @@
                     <h2>✏️ 2. Exercices d'entraînement</h2>
                     <div class="contenu-texte">${cours.exercices || "Exercices à venir."}</div>
                     <button class="btn-toggle" onclick="toggleCorrige('corrige-bloc')">Afficher / Masquer la correction</button>
-                    <div id="corrige-bloc" class="corrige-box">${cours.corrige || "Corrigé à venir."}</div>
+                    <div id="corrige-bloc" class="corrige-box">${cours.corriges || "Corrigé à venir."}</div>
                 </section>
 
-                <section class="pdf-download-box">
-                    <div>
-                        <h3 style="color: #92400e; margin-bottom: 0.3rem;">⏱️ Prêt pour l'évaluation ?</h3>
-                        <p style="color: #78350f; font-size: 0.95rem;">Télécharge et imprime le contrôle blanc ainsi que son corrigé en PDF.</p>
-                    </div>
-                    <div>
-                        <a href="${cours.lienPdf}" target="_blank" class="btn-primary" style="background: #d97706;">📄 Télécharger le Contrôle PDF</a>
-                    </div>
-                </section>
+                ${blocPdf}
             `;
         }
 
-        // Charge le cours depuis la liste locale en attendant la connexion Google Sheets (étape 2)
-        if (typeof listeCours !== "undefined" && indexCours !== null) {
-            afficherDetailCours(listeCours[indexCours]);
+        function chargerPageUnique() {
+            const params = new URLSearchParams(window.location.search);
+            const indexCours = params.get("id");
+            if (indexCours !== null && listeCours[indexCours]) {
+                afficherDetailCours(listeCours[indexCours]);
+            } else {
+                afficherDetailCours(null);
+            }
         }
     </script>
 </body>
