@@ -3,30 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scolarix — Cours, Exercices & Contrôles PDF (CP à Terminale)</title>
+    <title>Scolarix — Portail Éducatif, Cours, Exercices & Aide aux Devoirs</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- Barre supérieure d'information -->
+    <div class="topbar">
+        <span>🎓 Du CP à la Terminale : Voies Générale, Technologique & Professionnelle</span>
+        <a href="visio.html">📅 Réserver une aide aux devoirs en visio</a>
+    </div>
+
+    <!-- Navigation principale avec sous-menus déroulants -->
     <header class="navbar">
         <a href="index.html" class="logo">🎓 Scolarix</a>
-        <div class="nav-links">
-            <a href="#catalogue">Les Cours</a>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="index.html" class="nav-link">Accueil</a></li>
+            
+            <li class="nav-item">
+                <span class="nav-link" onclick="filtrerParMenu('ecole')">École ▾</span>
+                <div class="dropdown">
+                    <a href="#catalogue" onclick="filtrerParMenu('ecole', 'CP')">Classe de CP</a>
+                    <a href="#catalogue" onclick="filtrerParMenu('ecole', 'CE1')">Classe de CE1</a>
+                    <a href="#catalogue" onclick="filtrerParMenu('ecole', 'CE2')">Classe de CE2</a>
+                    <a href="#catalogue" onclick="filtrerParMenu('ecole', 'CM1')">Classe de CM1</a>
+                    <a href="#catalogue" onclick="filtrerParMenu('ecole', 'CM2')">Classe de CM2</a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <span class="nav-link" onclick="filtrerParMenu('college')">Collège ▾</span>
+                <div class="dropdown">
+                    <a href="#catalogue" onclick="filtrerParMenu('college', '6e')">Classe de 6e</a>
+                    <a href="#catalogue" onclick="filtrerParMenu('college', '5e')">Classe de 5e</a>
+                    <a href="#catalogue" onclick="filtrerParMenu('college', '4e')">Classe de 4e</a>
+                    <a href="#catalogue" onclick="filtrerParMenu('college', '3e')">Classe de 3e (Brevet)</a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <span class="nav-link" onclick="filtrerParMenu('lycee-gt')">Lycée ▾</span>
+                <div class="dropdown">
+                    <a href="#catalogue" onclick="filtrerParMenu('lycee-gt')">Lycée Général & Techno (2nde - Term)</a>
+                    <a href="#catalogue" onclick="filtrerParMenu('lycee-pro')">Lycée Professionnel (CAP & Bac Pro)</a>
+                </div>
+            </li>
+
+            <li class="nav-item"><a href="#faq" class="nav-link">FAQ</a></li>
+        </ul>
+        <div style="display:flex; gap:0.6rem; align-items:center;">
+            <button id="btnAdminNav" class="btn-primary" style="background:#10b981; display:none;" onclick="ouvrirModaleAjout()">+ Ajouter un cours</button>
             <a href="visio.html" class="btn-primary">Aide en visio</a>
         </div>
     </header>
 
+    <!-- Bannière Hero -->
     <section class="hero">
-        <span class="pill-badge">Du CP à la Terminale • Général, Techno & Pro</span>
-        <h1>Comprends tes cours et réussis tous tes contrôles</h1>
-        <p>Accède gratuitement aux fiches de révision, aux exercices corrigés et aux contrôles blancs en PDF pour t'entraîner à ton rythme.</p>
-        
-        <div class="search-box">
-            <input type="text" id="searchInput" onkeyup="filtrerCours()" placeholder="🔍 Rechercher un chapitre, une classe (ex: CM2, 3e, Bac Pro, maths...)">
+        <span class="hero-badge">Plateforme 100 % Gratuite de Ressources Scolaires</span>
+        <h1>Comprends tes leçons et réussis tous tes contrôles</h1>
+        <p>Fiches de révision synthétiques, exercices corrigés pas à pas et contrôles blancs en PDF pour l'école, le collège et toutes les filières du lycée.</p>
+        <div class="search-bar">
+            <input type="text" id="searchInput" onkeyup="afficherCours()" placeholder="🔍 Rechercher une leçon, une classe (ex: CM2, 3e, Bac Pro, équations...)">
         </div>
     </section>
 
+    <!-- Chiffres clés -->
+    <div class="stats-bar">
+        <div class="stat-item"><h3>CP → Term</h3><p>Tous les niveaux couverts</p></div>
+        <div class="stat-item"><h3>3 Voies</h3><p>Générale, Techno & Pro</p></div>
+        <div class="stat-item"><h3>100 %</h3><p>Fiches & Contrôles PDF gratuits</p></div>
+        <div class="stat-item"><h3>En direct</h3><p>Aide aux devoirs en visio</p></div>
+    </div>
+
+    <!-- Catalogue des cours -->
     <main id="catalogue" class="container">
+        <div class="section-title">
+            <h2>Nos derniers cours et contrôles</h2>
+            <p>Sélectionne ton niveau ou utilise la barre de recherche ci-dessus</p>
+        </div>
+
         <div class="filters">
             <button class="filter-btn active" onclick="changerCategorie('tous', this)">Tous les niveaux</button>
             <button class="filter-btn" onclick="changerCategorie('ecole', this)">École (CP - CM2)</button>
@@ -35,24 +90,92 @@
             <button class="filter-btn" onclick="changerCategorie('lycee-pro', this)">Lycée Professionnel</button>
         </div>
 
-        <div class="courses-grid" id="coursesContainer"></div>
+        <div class="courses-grid" id="coursesContainer">
+            <p style="grid-column:1/-1; text-align:center; color:var(--text-muted);">Chargement des cours...</p>
+        </div>
     </main>
 
-    <section class="container">
-        <div class="visio-banner">
-            <h2>Besoin d'un coup de main en direct ?</h2>
-            <p>Tu bloques sur un devoir maison ou tu veux réviser un contrôle important ? Réserve un créneau d'aide aux devoirs en visio.</p>
-            <a href="visio.html" class="btn-primary" style="padding: 0.9rem 1.8rem; font-size: 1rem;">Réserver une aide à distance →</a>
+    <!-- Pourquoi Scolarix -->
+    <section class="container" style="background:white; border-radius:20px; border:1px solid var(--border);">
+        <div class="section-title">
+            <h2>Une méthode pensée pour débloquer chaque élève</h2>
+            <p>L'alliance entre des ressources claires en libre accès et un accompagnement humain</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-box">
+                <h3>📘 Des cours qui vont à l'essentiel</h3>
+                <p style="color:var(--text-muted); margin-top:0.5rem;">Fini les chapitres interminables : chaque fiche résume les définitions, les formules et les astuces clés à retenir.</p>
+            </div>
+            <div class="feature-box">
+                <h3>⏱️ Des contrôles blancs en PDF</h3>
+                <p style="color:var(--text-muted); margin-top:0.5rem;">Imprime nos évaluations types avec leur barème officiel pour t'entraîner dans les conditions réelles de la classe.</p>
+            </div>
+            <div class="feature-box">
+                <h3>💻 Un soutien en direct à la carte</h3>
+                <p style="color:var(--text-muted); margin-top:0.5rem;">Besoin d'explications personnalisées avant un examen ? Réserve un créneau en visio sans engagement.</p>
+            </div>
         </div>
     </section>
 
+    <!-- Foire Aux Questions (FAQ) -->
+    <section id="faq" class="container" style="max-width:850px;">
+        <div class="section-title">
+            <h2>Questions fréquentes (FAQ)</h2>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <strong>Les cours et contrôles PDF sur Scolarix sont-ils vraiment gratuits ?</strong>
+            <div class="faq-answer">Oui, l'ensemble des fiches de cours, exercices corrigés et contrôles PDF mis en ligne sur Scolarix est accessible gratuitement pour tous les élèves.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <strong>Proposez-vous des cours pour le lycée professionnel et technologique ?</strong>
+            <div class="faq-answer">Absolument ! Contrairement à beaucoup de plateformes, Scolarix accompagne les élèves du CP jusqu'à la Terminale dans les trois voies : Générale, Technologique (STMG, STI2D...) et Professionnelle (CAP, Bac Pro).</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <strong>Comment fonctionne l'aide aux devoirs en visio ?</strong>
+            <div class="faq-answer">Il suffit de réserver un créneau depuis la page « Aide en visio » et de nous envoyer la photo de ton exercice ou de ton cours par e-mail avant la séance.</div>
+        </div>
+    </section>
+
+    <!-- Pied de page complet style WordPress -->
     <footer>
-        <p>© 2026 Scolarix — Tous droits réservés | Contact : contact.scolarix@gmail.com</p>
-        <p style="margin-top:0.5rem;">
-            <a href="#">YouTube</a> • <a href="#">TikTok</a> • <a href="#">Instagram</a> • <a href="#">Facebook</a>
-        </p>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>🎓 Scolarix</h4>
+                <p style="font-size:0.9rem; color:#94a3b8;">La plateforme d'aide aux devoirs et de révisions du CP à la Terminale (Voies Générale, Technologique et Professionnelle).</p>
+            </div>
+            <div class="footer-col">
+                <h4>Niveaux scolaires</h4>
+                <ul>
+                    <li><a href="#catalogue" onclick="filtrerParMenu('ecole')">École Primaire (CP - CM2)</a></li>
+                    <li><a href="#catalogue" onclick="filtrerParMenu('college')">Collège (6e - 3e)</a></li>
+                    <li><a href="#catalogue" onclick="filtrerParMenu('lycee-gt')">Lycée Général & Techno</a></li>
+                    <li><a href="#catalogue" onclick="filtrerParMenu('lycee-pro')">Lycée Professionnel</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="visio.html">Aide aux devoirs en visio</a></li>
+                    <li><a href="visio.html">Préparation Brevet & Bac</a></li>
+                    <li><a href="mailto:contact.scolarix@gmail.com">Nous contacter</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Suivez-nous</h4>
+                <ul>
+                    <li><a href="#">YouTube</a></li>
+                    <li><a href="#">TikTok</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Facebook</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Scolarix — Tous droits réservés.</span>
+            <span>
+                <a href="#" id="lienConnexionAdmin" onclick="ouvrirModaleLogin()" style="color:#94a3b8; text-decoration:none;">🔒 Admin</a>
+                <a href="#" id="lienDeconnexionAdmin" onclick="deconnecterAdmin()" style="color:#10b981; text-decoration:none; display:none;">🔓 Déconnexion Admin</a>
+            </span>
+        </div>
     </footer>
 
-    <script src="cours.js"></script>
-</body>
-</html>
