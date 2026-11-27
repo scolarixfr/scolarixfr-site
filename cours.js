@@ -1,75 +1,69 @@
-// LISTE DE VOS COURS (Ajoutez vos futurs chapitres ici !)
-const listeCours = [
-    {
-        categorie: "ecole",
-        badge: "École • CM1 / CM2",
-        titre: "Les homophones grammaticaux (a/à, et/est)",
-        description: "Comprendre la différence entre le verbe et la préposition pour ne plus faire de fautes en dictée.",
-        lienCours: "cours-modele.html",
-        lienPdf: "#"
-    },
-    {
-        categorie: "college",
-        badge: "Collège • 4e / 3e",
-        titre: "Les équations du premier degré",
-        description: "La méthode pas à pas pour isoler l'inconnue x, avec 3 exercices progressifs et un sujet type Brevet.",
-        lienCours: "cours-modele.html",
-        lienPdf: "href="Contrôle Blanc _ Les Équations (3ème).pdf"
-    },
-    {
-        categorie: "lycee-gt",
-        badge: "Lycée Général & Techno • 2nde / 1ère",
-        titre: "Méthodologie : Réussir son commentaire composé",
-        description: "Comment analyser un texte littéraire, bâtir un plan détaillé et rédiger une introduction efficace.",
-        lienCours: "cours-modele.html",
-        lienPdf: "#"
-    },
-    {
-        categorie: "lycee-pro",
-        badge: "Lycée Pro • 1ère / Terminale Bac Pro",
-        titre: "Maths-Sciences : Les suites numériques",
-        description: "Comprendre les suites arithmétiques et géométriques appliquées à des situations professionnelles.",
-        lienCours: "cours-modele.html",
-        lienPdf: "#"
-    }
-];
+const SHEET_ID = "1EDrFbP809dPVlK-j0tH9s6crxCmrDK1VelsDjdWDScI";
+const URL_API = `https://elk.sh{SHEET_ID}/1`;
 
+let listeCours = [];
 let categorieActuelle = "tous";
+
+async function chargerCoursDepuisSheet() {
+    const container = document.getElementById("coursesContainer");
+    if (container) {
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 2rem;">Chargement des cours Scolarix...</p>`;
+    }
+
+    try {
+        const reponse = await fetch(URL_API);
+        listeCours = await reponse.json();
+        
+        if (container) afficherCours();
+        
+        if (typeof chargerPageUnique === "function") {
+            chargerPageUnique();
+        }
+    } catch (erreur) {
+        if (container) {
+            container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #ef4444;">Impossible de charger les cours. Vérifiez que le tableau est bien publié sur le Web.</p>`;
+        }
+    }
+}
 
 function afficherCours() {
     const container = document.getElementById("coursesContainer");
+    if (!container) return;
+
     const recherche = document.getElementById("searchInput").value.toLowerCase();
     container.innerHTML = "";
 
-    const coursFiltres = listeCours.filter(cours => {
+    listeCours.forEach((cours, index) => {
         const matchCategorie = (categorieActuelle === "tous") || (cours.categorie === categorieActuelle);
-        const matchRecherche = cours.titre.toLowerCase().includes(recherche) || 
-                               cours.badge.toLowerCase().includes(recherche) || 
-                               cours.description.toLowerCase().includes(recherche);
-        return matchCategorie && matchRecherche;
+        const matchRecherche = (cours.titre || "").toLowerCase().includes(recherche) || 
+                               (cours.badge || "").toLowerCase().includes(recherche) || 
+                               (cours.description || "").toLowerCase().includes(recherche);
+
+        if (matchCategorie && matchRecherche) {
+            const boutonPdf = (cours.lienPdf && cours.lienPdf !== "#" && cours.lienPdf.startsWith("http")) 
+                ? `<a href="${cours.lienPdf}" target="_blank" class="btn-card-pdf">📄 Contrôle PDF</a>` 
+                : "";
+
+            const carte = `
+                <div class="course-card">
+                    <div>
+                        <span class="tag tag-${cours.categorie}">${cours.badge}</span>
+                        <h3>${cours.titre}</h3>
+                        <p>${cours.description}</p>
+                    </div>
+                    <div class="card-actions">
+                        <a href="cours.html?id=${index}" class="btn-card-main">Lire le cours</a>
+                        ${boutonPdf}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += carte;
+        }
     });
 
-    if (coursFiltres.length === 0) {
-        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 2rem;">Aucun cours trouvé pour cette recherche. Essayez un autre mot-clé !</p>`;
-        return;
+    if (container.innerHTML === "") {
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 2rem;">Aucun cours trouvé pour cette recherche.</p>`;
     }
-
-    coursFiltres.forEach(cours => {
-        const carte = `
-            <div class="course-card">
-                <div>
-                    <span class="tag tag-${cours.categorie}">${cours.badge}</span>
-                    <h3>${cours.titre}</h3>
-                    <p>${cours.description}</p>
-                </div>
-                <div class="card-actions">
-                    <a href="${cours.lienCours}" class="btn-card-main">Lire le cours</a>
-                    <a href="${cours.lienPdf}" target="_blank" class="btn-card-pdf">📄 Contrôle PDF</a>
-                </div>
-            </div>
-        `;
-        container.innerHTML += carte;
-    });
 }
 
 function changerCategorie(cat, bouton) {
@@ -83,5 +77,4 @@ function filtrerCours() {
     afficherCours();
 }
 
-// Affiche les cours au chargement de la page
-window.onload = afficherCours;
+window.onload = chargerCoursDepuisSheet;
